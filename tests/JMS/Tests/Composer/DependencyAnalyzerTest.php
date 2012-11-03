@@ -36,6 +36,8 @@ class DependencyAnalyzerTest extends \PHPUnit_Framework_TestCase
         $tests[] = array('open_source_lib');
         $tests[] = array('dev_stability');
         $tests[] = array('aliased_public_lib');
+        $tests[] = array('aggregate_package');
+        $tests[] = array('unavailable_dev_package');
 
         return $tests;
     }

@@ -90,6 +90,24 @@ class DependencyGraph
         $nodeB->addInEdge($edge);
     }
 
+    /**
+     * Searches the graph for an aggregate package that contains the given package.
+     *
+     * @param string $packageName the name of the contained package
+     *
+     * @return PackageNode|null the aggregate package
+     */
+    public function getAggregatePackageContaining($packageName)
+    {
+        foreach ($this->packages as $packageNode) {
+            if ($packageNode->replaces($packageName)) {
+                return $packageNode;
+            }
+        }
+
+        return null;
+    }
+
     private function getOrCreate($package)
     {
         if (isset($this->packages[$package])) {

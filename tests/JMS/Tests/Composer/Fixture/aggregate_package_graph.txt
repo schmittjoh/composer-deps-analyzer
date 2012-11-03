@@ -1,0 +1,18 @@
+__root (Root)
+=============
+Version: <null>
+-> package/aggregate
+-> package/some-other-package
+
+
+package/aggregate
+=================
+Version: dev-master
+Source-Reference: master
+
+
+package/some-other-package
+==========================
+Version: dev-master
+Source-Reference: master
+-> package/aggregate

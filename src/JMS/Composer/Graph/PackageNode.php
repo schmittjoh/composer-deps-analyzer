@@ -126,6 +126,15 @@ class PackageNode
         $this->outEdges[] = $edge;
     }
 
+    public function replaces($package)
+    {
+        if ( ! isset($this->data['replace'])) {
+            return false;
+        }
+
+        return isset($this->data['replace'][$package]);
+    }
+
     public function __toString()
     {
         return sprintf('PackageNode(qualifiedName = %s, version = %s, ref = %s, hasDir = %s)',

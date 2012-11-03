@@ -1,0 +1,16 @@
+__root (Root)
+=============
+Version: <null>
+-> package/some-package-with-dev-dep
+
+
+package/dev-dep
+===============
+Version: <null>
+
+
+package/some-package-with-dev-dep
+=================================
+Version: dev-master
+Source-Reference: master
+-> package/dev-dep

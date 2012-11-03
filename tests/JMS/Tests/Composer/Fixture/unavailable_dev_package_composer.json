@@ -1,0 +1,35 @@
+{
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "package/some-package-with-dev-dep",
+                "version": "dev-master",
+                "require-dev": {
+                    "package/dev-dep": "dev-master"
+                },
+                "source": {
+                    "type": "git",
+                    "url": "git://github.com/schmittjoh/composer-deps-analyzer",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "package/dev-dep",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "git://github.com/schmittjoh/composer-deps-analyzer",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
+
+    "require": {
+        "package/some-package-with-dev-dep": "dev-master"
+    }
+}

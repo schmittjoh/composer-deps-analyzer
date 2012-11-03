@@ -1,0 +1,64 @@
+{
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "package/aggregate",
+                "version": "dev-master",
+                "replace": {
+                    "package/sub-a": "dev-master",
+                    "package/sub-b": "dev-master"
+                },
+                "source": {
+                    "type": "git",
+                    "url": "git://github.com/schmittjoh/composer-deps-analyzer",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "package/sub-a",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "git://github.com/schmittjoh/composer-deps-analyzer",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "package/sub-b",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "git://github.com/schmittjoh/composer-deps-analyzer",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "package/some-other-package",
+                "version": "dev-master",
+                "require": {
+                    "package/sub-a": "dev-master"
+                },
+                "source": {
+                    "type": "git",
+                    "url": "git://github.com/schmittjoh/composer-deps-analyzer",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
+
+    "require": {
+        "package/aggregate": "dev-master",
+        "package/some-other-package": "dev-master"
+    }
+}
