@@ -1,0 +1,8 @@
+{
+    "repositories": [
+        {"type": "vcs", "url": "https://github.com/schmittjoh/PHP-Parser"}
+    ],
+    "require": {
+        "nikic/php-parser": "dev-master#fd7a28d1bc846a3ed04e2946bb2b46cf47dc5ba1"
+    }
+}

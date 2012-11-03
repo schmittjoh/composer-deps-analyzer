@@ -1,0 +1,26 @@
+{
+    "name": "jms/composer-deps-analyzer",
+    "description": "Builds a Dependency Graph from a composer.json file",
+
+    "license": "Apache2",
+
+    "author": [
+        {"name" : "Johannes M. Schmitt <schmittjoh@gmail.com>"}
+    ],
+
+    "autoload": {
+        "psr-0": {
+            "JMS\\": "src/"
+        }
+    },
+
+    "require": {
+        "php": ">= 5.3.2"
+    },
+
+    "require-dev": {
+        "composer/composer": "dev-master",
+        "symfony/filesystem": "2.1.*",
+        "symfony/process": "2.1.*"
+    }
+}

@@ -1,0 +1,16 @@
+__root (Root)
+=============
+Version: <null>
+-> nikic/php-parser
+
+
+nikic/php-parser
+================
+Version: dev-master
+Source-Reference: fd7a28d1bc846a3ed04e2946bb2b46cf47dc5ba1
+-> php
+
+
+php
+===
+Version: <null>

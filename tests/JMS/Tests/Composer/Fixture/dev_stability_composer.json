@@ -1,0 +1,6 @@
+{
+    "require": {
+        "jms/cg": "dev-master#588c1145c85b396460ad91bf51e3b53204fee648"
+    },
+    "minimum-stability": "dev"
+}

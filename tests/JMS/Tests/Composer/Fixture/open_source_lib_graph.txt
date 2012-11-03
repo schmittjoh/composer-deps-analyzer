@@ -1,0 +1,24 @@
+jms/foobar (Root)
+=================
+Version: <null>
+-> jms/cg
+-> php
+-> symfony/filesystem
+
+
+jms/cg
+======
+Version: 1.0.0
+-> php
+
+
+php
+===
+Version: <null>
+
+
+symfony/filesystem
+==================
+Version: v2.0.16
+Source-Reference: v2.1.0-BETA2
+-> php

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "jms/metadata": "1.1.1"
+    }
+}
