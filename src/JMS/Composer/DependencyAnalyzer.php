@@ -46,16 +46,33 @@ class DependencyAnalyzer
         }
 
         $rootPackageData = json_decode(file_get_contents($dir.'/composer.json'), true);
+        if ( ! isset($rootPackageData['name'])) {
+            $rootPackageData['name'] = '__root';
+        }
 
-        // If there are is no composer.lock file, then either the project has no
+        // If there is no composer.lock file, then either the project has no
         // dependencies, or the dependencies were not installed.
         if ( ! is_file($dir.'/composer.lock')) {
             if ($this->hasDependencies($rootPackageData)) {
                 throw new \RuntimeException(sprintf('You need to run "composer install --dev" in "%s" before analyzing dependencies.', $dir));
             }
 
-            $graph = new DependencyGraph();
+            $graph = new DependencyGraph(new PackageNode($rootPackageData['name'], $rootPackageData));
             $graph->getRootPackage()->setAttribute('dir', $dir);
+            
+            // Connect built-in dependencies for example on the PHP version, or
+            // on PHP extensions. For these, composer does not create a composer.lock.
+            if (isset($rootPackageData['require'])) {
+                foreach ($rootPackageData['require'] as $name => $versionConstraint) {
+                    $this->connect($graph, $rootPackageData['name'], $name, $versionConstraint);
+                }
+            }
+            
+            if (isset($rootPackageData['require-dev'])) {
+                foreach ($rootPackageData['require-dev'] as $name => $versionConstraint) {
+                    $this->connect($graph, $rootPackageData['name'], $name, $versionConstraint);
+                }
+            }
 
             return $graph;
         }
@@ -68,9 +85,6 @@ class DependencyAnalyzer
             throw new \RuntimeException(sprintf('The vendor directory "%s" could not be found.', $vendorDir));
         }
 
-        if ( ! isset($rootPackageData['name'])) {
-            $rootPackageData['name'] = '__root';
-        }
         $graph = new DependencyGraph(new PackageNode($rootPackageData['name'], $rootPackageData));
         $graph->getRootPackage()->setAttribute('dir', $dir);
 
@@ -162,14 +176,35 @@ class DependencyAnalyzer
 
     private function hasDependencies(array $config)
     {
-        if (isset($config['require']) && ! empty($config['require'])) {
+        if (isset($config['require']) && $this->hasUserlandDependency($config['require'])) {
             return true;
         }
 
-        if (isset($config['require-dev']) && ! empty($config['require-dev'])) {
+        if (isset($config['require-dev']) && $this->hasUserlandDependency($config['require-dev'])) {
             return true;
         }
 
+        return false;
+    }
+    
+    private function hasUserlandDependency(array $requires)
+    {
+        if (empty($requires)) {
+            return false;
+        }
+        
+        foreach ($requires as $name => $versionConstraint) {
+            if ('php' === $name) {
+                continue;
+            }
+            
+            if (0 === strpos($name, 'ext-')) {
+                continue;
+            }
+            
+            return true;
+        }
+        
         return false;
     }
 }

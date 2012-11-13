@@ -1,0 +1,15 @@
+foo/bar (Root)
+==============
+Version: <null>
+-> ext-tokenizer
+-> php
+
+
+ext-tokenizer
+=============
+Version: <null>
+
+
+php
+===
+Version: <null>

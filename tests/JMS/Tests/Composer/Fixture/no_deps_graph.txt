@@ -1,3 +1,3 @@
-__root (Root)
-=============
+somelib/wo-deps (Root)
+======================
 Version: <null>

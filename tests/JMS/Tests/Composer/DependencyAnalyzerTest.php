@@ -38,6 +38,7 @@ class DependencyAnalyzerTest extends \PHPUnit_Framework_TestCase
         $tests[] = array('aliased_public_lib');
         $tests[] = array('aggregate_package');
         $tests[] = array('unavailable_dev_package');
+        $tests[] = array('dep_only_on_php_and_ext');
 
         return $tests;
     }

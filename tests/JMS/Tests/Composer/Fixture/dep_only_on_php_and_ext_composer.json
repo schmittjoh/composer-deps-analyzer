@@ -1,0 +1,7 @@
+{
+    "name": "foo/bar",
+    "require": {
+        "php": ">=5.3",
+        "ext-tokenizer": "*"
+    }
+}
