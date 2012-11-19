@@ -20,15 +20,44 @@ namespace JMS\Composer\Graph;
 
 class PackageNode
 {
+    /**
+     * @var string
+     */
     private $repositoryId;
+    /**
+     * @var string
+     */
     private $name;
+    /**
+     * @var array
+     */
     private $data;
+    /**
+     * @var string
+     */
     private $version;
+    /**
+     * @var string
+     */
     private $sourceReference;
+    /**
+     * @var DependencyEdge[]
+     */
     private $inEdges = array();
+    /**
+     * @var DependencyEdge[]
+     */
     private $outEdges = array();
+    /**
+     * @var array
+     */
     private $attributes;
 
+    /**
+     * @param string $name
+     * @param array  $data
+     * @param array  $attributes
+     */
     public function __construct($name, array $data = array(), array $attributes = array())
     {
         $this->name = $name;
@@ -36,16 +65,25 @@ class PackageNode
         $this->attributes = $attributes;
     }
 
+    /**
+     * @param string $id
+     */
     public function setRepositoryId($id)
     {
         $this->repositoryId = $id;
     }
 
+    /**
+     * @return bool
+     */
     public function isPhpExtension()
     {
         return 0 === strpos($this->getQualifiedName(), 'ext-');
     }
 
+    /**
+     * @return string
+     */
     public function getQualifiedName()
     {
         if ( ! $this->hasAttribute('dir')) {
@@ -57,16 +95,31 @@ class PackageNode
         return $repositoryId.'__'.$this->name;
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     */
     public function setAttribute($key, $value)
     {
         $this->attributes[$key] = $value;
     }
 
+    /**
+     * @param $key
+     *
+     * @return bool
+     */
     public function hasAttribute($key)
     {
         return isset($this->attributes[$key]);
     }
 
+    /**
+     * @param $key
+     *
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
     public function getAttribute($key)
     {
         if ( ! isset($this->attributes[$key])) {
@@ -76,56 +129,91 @@ class PackageNode
         return $this->attributes[$key];
     }
 
+    /**
+     * @return array
+     */
     public function getData()
     {
         return $this->data;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getVersion()
     {
         return $this->version;
     }
 
+    /**
+     * @return string
+     */
     public function getSourceReference()
     {
         return $this->sourceReference;
     }
 
+    /**
+     * @param $version
+     */
     public function setVersion($version)
     {
         $this->version = $version;
     }
 
+    /**
+     * @param $ref
+     */
     public function setSourceReference($ref)
     {
         $this->sourceReference = $ref;
     }
 
+    /**
+     * @return DependencyEdge[]
+     */
     public function getInEdges()
     {
         return $this->inEdges;
     }
 
+    /**
+     * @return DependencyEdge[]
+     */
     public function getOutEdges()
     {
         return $this->outEdges;
     }
 
+    /**
+     * @param DependencyEdge $edge
+     */
     public function addInEdge(DependencyEdge $edge)
     {
         $this->inEdges[] = $edge;
     }
 
+    /**
+     * @param DependencyEdge $edge
+     */
     public function addOutEdge(DependencyEdge $edge)
     {
         $this->outEdges[] = $edge;
     }
 
+    /**
+     * @param $package
+     *
+     * @return bool
+     */
     public function replaces($package)
     {
         if ( ! isset($this->data['replace'])) {
@@ -135,6 +223,9 @@ class PackageNode
         return isset($this->data['replace'][$package]);
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return sprintf('PackageNode(qualifiedName = %s, version = %s, ref = %s, hasDir = %s)',

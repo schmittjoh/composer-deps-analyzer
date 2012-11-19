@@ -30,6 +30,10 @@ class DependencyAnalyzer
 {
     /**
      * @param string $dir
+     *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     * @return \JMS\Composer\Graph\DependencyGraph
      */
     public function analyze($dir)
     {
@@ -59,7 +63,7 @@ class DependencyAnalyzer
 
             $graph = new DependencyGraph(new PackageNode($rootPackageData['name'], $rootPackageData));
             $graph->getRootPackage()->setAttribute('dir', $dir);
-            
+
             // Connect built-in dependencies for example on the PHP version, or
             // on PHP extensions. For these, composer does not create a composer.lock.
             if (isset($rootPackageData['require'])) {
@@ -67,7 +71,7 @@ class DependencyAnalyzer
                     $this->connect($graph, $rootPackageData['name'], $name, $versionConstraint);
                 }
             }
-            
+
             if (isset($rootPackageData['require-dev'])) {
                 foreach ($rootPackageData['require-dev'] as $name => $versionConstraint) {
                     $this->connect($graph, $rootPackageData['name'], $name, $versionConstraint);
@@ -174,6 +178,11 @@ class DependencyAnalyzer
         }
     }
 
+    /**
+     * @param array $config
+     *
+     * @return bool
+     */
     private function hasDependencies(array $config)
     {
         if (isset($config['require']) && $this->hasUserlandDependency($config['require'])) {
@@ -186,25 +195,30 @@ class DependencyAnalyzer
 
         return false;
     }
-    
+
+    /**
+     * @param array $requires
+     *
+     * @return bool
+     */
     private function hasUserlandDependency(array $requires)
     {
         if (empty($requires)) {
             return false;
         }
-        
+
         foreach ($requires as $name => $versionConstraint) {
             if ('php' === $name) {
                 continue;
             }
-            
+
             if (0 === strpos($name, 'ext-')) {
                 continue;
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
 }

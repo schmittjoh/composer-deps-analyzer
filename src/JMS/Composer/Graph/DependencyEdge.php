@@ -20,10 +20,24 @@ namespace JMS\Composer\Graph;
 
 class DependencyEdge
 {
+    /**
+     * @var PackageNode
+     */
     private $sourcePackage;
+    /**
+     * @var PackageNode
+     */
     private $destPackage;
+    /**
+     * @var string
+     */
     private $versionConstraint;
 
+    /**
+     * @param PackageNode $sourcePackage
+     * @param PackageNode $destPackage
+     * @param string      $versionConstraint
+     */
     public function __construct(PackageNode $sourcePackage, PackageNode $destPackage, $versionConstraint)
     {
         $this->sourcePackage = $sourcePackage;
@@ -31,16 +45,25 @@ class DependencyEdge
         $this->versionConstraint = $versionConstraint;
     }
 
+    /**
+     * @return string
+     */
     public function getVersionConstraint()
     {
         return $this->versionConstraint;
     }
 
+    /**
+     * @return PackageNode
+     */
     public function getSourcePackage()
     {
         return $this->sourcePackage;
     }
 
+    /**
+     * @return PackageNode
+     */
     public function getDestPackage()
     {
         return $this->destPackage;

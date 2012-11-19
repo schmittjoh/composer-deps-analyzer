@@ -27,7 +27,13 @@ use JMS\Composer\Graph\PackageNode;
  */
 class DependencyGraph
 {
+    /**
+     * @var PackageNode[]
+     */
     private $packages = array();
+    /**
+     * @var PackageNode
+     */
     private $rootPackage;
 
     public function __construct(PackageNode $rootPackage = null)
