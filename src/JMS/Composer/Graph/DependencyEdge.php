@@ -68,4 +68,14 @@ class DependencyEdge
     {
         return $this->destPackage;
     }
+
+    /**
+     * @return bool
+     */
+    public function isDevDependency()
+    {
+        $data = $this->sourcePackage->getData();
+
+        return isset($data['require-dev'][$this->destPackage->getName()]);
+    }
 }
