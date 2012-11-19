@@ -79,7 +79,7 @@ class DependencyGraph
         return $this->packages[$name] = new PackageNode($name, $data);
     }
 
-    public function connect($packageA, $packageB, $versionConstraint)
+    public function connect($packageA, $packageB, $versionConstraint, $isDev)
     {
         $nodeA = $this->getOrCreate($packageA);
         $nodeB = $this->getOrCreate($packageB);
@@ -91,7 +91,7 @@ class DependencyGraph
             }
         }
 
-        $edge = new DependencyEdge($nodeA, $nodeB, $versionConstraint);
+        $edge = new DependencyEdge($nodeA, $nodeB, $versionConstraint, $isDev);
         $nodeA->addOutEdge($edge);
         $nodeB->addInEdge($edge);
     }
