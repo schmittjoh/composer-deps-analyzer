@@ -32,23 +32,17 @@ class DependencyEdge
      * @var string
      */
     private $versionConstraint;
-    /**
-     * @var bool
-     */
-    private $isDev;
 
     /**
      * @param PackageNode $sourcePackage
      * @param PackageNode $destPackage
      * @param string      $versionConstraint
-     * @param bool        $isDev
      */
-    public function __construct(PackageNode $sourcePackage, PackageNode $destPackage, $versionConstraint, $isDev)
+    public function __construct(PackageNode $sourcePackage, PackageNode $destPackage, $versionConstraint)
     {
         $this->sourcePackage = $sourcePackage;
         $this->destPackage = $destPackage;
         $this->versionConstraint = $versionConstraint;
-        $this->isDev = $isDev;
     }
 
     /**
@@ -78,9 +72,10 @@ class DependencyEdge
     /**
      * @return bool
      */
-    public function getIsDevDependecy()
+    public function isDevDependency()
     {
-        return $this->isDev;
-    }
+        $data = $this->sourcePackage->getData();
 
+        return isset($data['require-dev'][$this->destPackage->getName()]);
+    }
 }

@@ -122,7 +122,7 @@ class DependencyAnalyzer
 
             if (isset($packageData['require-dev'])) {
                 foreach ($packageData['require-dev'] as $name => $version) {
-                    $this->connect($graph, $packageData['name'], $name, $version, true);
+                    $this->connect($graph, $packageData['name'], $name, $version);
                 }
             }
         }
@@ -143,11 +143,11 @@ class DependencyAnalyzer
         return $graph;
     }
 
-    private function connect(DependencyGraph $graph, $sourceName, $destName, $version, $isdev = false)
+    private function connect(DependencyGraph $graph, $sourceName, $destName, $version)
     {
         // If the dest package is available, just connect it.
         if ($graph->hasPackage($destName)) {
-            $graph->connect($sourceName, $destName, $version, $isdev);
+            $graph->connect($sourceName, $destName, $version);
 
             return;
         }
@@ -156,7 +156,7 @@ class DependencyAnalyzer
         // some aggregate package that replaces our dest package, and connect to
         // this package.
         if (null !== $aggregatePackage = $graph->getAggregatePackageContaining($destName)) {
-            $graph->connect($sourceName, $aggregatePackage->getName(), $version, $isdev);
+            $graph->connect($sourceName, $aggregatePackage->getName(), $version);
 
             return;
         }
@@ -164,7 +164,7 @@ class DependencyAnalyzer
         // If we reach this, we have stumbled upon a package that is only available
         // if the source package is installed with dev dependencies. We still add
         // the connection, but we will not have any data about the dest package.
-        $graph->connect($sourceName, $destName, $version, $isdev);
+        $graph->connect($sourceName, $destName, $version);
     }
 
     private function processLockedData(DependencyGraph $graph, array $lockedPackageData)
