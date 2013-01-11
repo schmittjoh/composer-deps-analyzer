@@ -40,8 +40,12 @@ class DependencyAnalyzer
         if ( ! is_dir($dir)) {
             throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $dir));
         }
-        $dir = realpath($dir);
 
+        if (stream_is_local($dir)) {
+            $dir = realpath($dir);
+        }
+
+        var_dump($dir);
         if ( ! is_file($dir.'/composer.json')) {
             $graph = new DependencyGraph();
             $graph->getRootPackage()->setAttribute('dir', $dir);
