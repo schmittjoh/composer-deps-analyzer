@@ -45,7 +45,6 @@ class DependencyAnalyzer
             $dir = realpath($dir);
         }
 
-        var_dump($dir);
         if ( ! is_file($dir.'/composer.json')) {
             $graph = new DependencyGraph();
             $graph->getRootPackage()->setAttribute('dir', $dir);
