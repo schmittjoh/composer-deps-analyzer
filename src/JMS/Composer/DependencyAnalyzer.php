@@ -175,7 +175,8 @@ class DependencyAnalyzer
         $package = $graph->getPackage($lockedPackageData['name']);
         $package->setVersion($lockedPackageData['version']);
 
-        if (isset($lockedPackageData[$lockedPackageData['installation-source']]['reference'])
+        if (isset($lockedPackageData['installation-source'])
+                && isset($lockedPackageData[$lockedPackageData['installation-source']]['reference'])
                 && $lockedPackageData['version'] !== $lockedPackageData[$lockedPackageData['installation-source']]['reference']) {
             $package->setSourceReference($lockedPackageData[$lockedPackageData['installation-source']]['reference']);
         }
