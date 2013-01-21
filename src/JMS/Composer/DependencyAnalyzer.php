@@ -172,7 +172,22 @@ class DependencyAnalyzer
 
     private function processLockedData(DependencyGraph $graph, array $lockedPackageData)
     {
-        $package = $graph->getPackage($lockedPackageData['name']);
+        $packageName = null;
+        if (isset($lockedPackageData['name'])) {
+            $packageName = $lockedPackageData['name'];
+        } else if (isset($lockedPackageData['package'])) {
+            $packageName = $lockedPackageData['package'];
+        }
+
+        if (null === $packageName) {
+            return;
+        }
+
+        $package = $graph->getPackage($packageName);
+        if (null === $package) {
+            return;
+        }
+        
         $package->setVersion($lockedPackageData['version']);
 
         if (isset($lockedPackageData['installation-source'])
