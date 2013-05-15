@@ -9,7 +9,9 @@ class DependencyGraphTest extends \PHPUnit_Framework_TestCase
     public function testImplicitCreationOfRootPackage()
     {
         $graph = new DependencyGraph();
-        $this->assertCount(1, $graph->getPackages());
-        $this->assertTrue($graph->isRootPackage($graph->getPackages()['__root']));
+        $packages = $graph->getPackages();
+        
+        $this->assertCount(1, $packages);
+        $this->assertTrue($graph->isRootPackage($packages['__root']));
     }
 }
