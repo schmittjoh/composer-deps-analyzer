@@ -18,6 +18,7 @@
 
 namespace JMS\Composer;
 
+use JMS\Composer\Exception\MissingLockFileException;
 use JMS\Composer\Graph\PackageNode;
 use JMS\Composer\Graph\DependencyGraph;
 
@@ -52,16 +53,25 @@ class DependencyAnalyzer
             return $graph;
         }
 
-        $rootPackageData = json_decode(file_get_contents($dir.'/composer.json'), true);
+        return $this->analyzeComposerData(
+            file_get_contents($dir.'/composer.json'),
+            is_file($dir.'/composer.lock') ? file_get_contents($dir.'/composer.lock') : null,
+            $dir
+        );
+    }
+
+    private function analyzeComposerData($composerJsonData, $composerLockData = null, $dir = null)
+    {
+        $rootPackageData = $this->parseJson($composerJsonData);
         if ( ! isset($rootPackageData['name'])) {
             $rootPackageData['name'] = '__root';
         }
 
         // If there is no composer.lock file, then either the project has no
         // dependencies, or the dependencies were not installed.
-        if ( ! is_file($dir.'/composer.lock')) {
+        if (empty($composerLockData)) {
             if ($this->hasDependencies($rootPackageData)) {
-                throw new \RuntimeException(sprintf('You need to run "composer install --dev" in "%s" before analyzing dependencies.', $dir));
+                throw new MissingLockFileException($dir);
             }
 
             $graph = new DependencyGraph(new PackageNode($rootPackageData['name'], $rootPackageData));
@@ -84,20 +94,15 @@ class DependencyAnalyzer
             return $graph;
         }
 
-        // The vendor directory is also only created when a package has dependencies,
-        // but since we handle the no-dependency case already in the previous if, at
-        // this point there really must be a directory.
-        $vendorDir = $dir.'/'.(isset($rootPackageData['config']['vendor-dir']) ? $rootPackageData['config']['vendor-dir'] : 'vendor');
-        if ( ! is_dir($vendorDir)) {
-            throw new \RuntimeException(sprintf('The vendor directory "%s" could not be found.', $vendorDir));
-        }
-
         $graph = new DependencyGraph(new PackageNode($rootPackageData['name'], $rootPackageData));
         $graph->getRootPackage()->setAttribute('dir', $dir);
 
+        $vendorDir = $dir.'/'.(isset($rootPackageData['config']['vendor-dir']) ? $rootPackageData['config']['vendor-dir'] : 'vendor');
+        $lockData = $this->parseJson($composerLockData);
+
         // Add regular packages.
-        if (is_file($installedFile = $vendorDir.'/composer/installed.json')) {
-            foreach (json_decode(file_get_contents($installedFile), true) as $packageData) {
+        if (isset($lockData['packages'])) {
+            foreach ($lockData['packages'] as $packageData) {
                 $package = $graph->createPackage($packageData['name'], $packageData);
                 $package->setAttribute('dir', $vendorDir.'/'.$packageData['name']);
                 $this->processLockedData($graph, $packageData);
@@ -105,8 +110,8 @@ class DependencyAnalyzer
         }
 
         // Add development packages.
-        if (is_file($installedDevFile = $vendorDir.'/composer/installed_dev.json')) {
-            foreach (json_decode(file_get_contents($installedDevFile), true) as $packageData) {
+        if (isset($lockData['packages-dev'])) {
+            foreach ($lockData['packages-dev'] as $packageData) {
                 $package = $graph->createPackage($packageData['name'], $packageData);
                 $package->setAttribute('dir', $vendorDir.'/'.$packageData['name']);
                 $this->processLockedData($graph, $packageData);
@@ -130,20 +135,17 @@ class DependencyAnalyzer
             }
         }
 
-        // Populate graph with versions, and source references.
-        $lockData = json_decode(file_get_contents($dir.'/composer.lock'), true);
-        if (isset($lockData['packages'])) {
-            foreach ($lockData['packages'] as $lockedPackageData) {
-                $this->processLockedData($graph, $lockedPackageData);
-            }
-        }
-        if (isset($lockData['packages-dev'])) {
-            foreach ($lockData['packages-dev'] as $lockedPackageData) {
-                $this->processLockedData($graph, $lockedPackageData);
-            }
+        return $graph;
+    }
+
+    private function parseJson($data)
+    {
+        $parsedData = json_decode($data, true);
+        if ($parsedData === false) {
+            throw new \RuntimeException('Could not parse JSON data.');
         }
 
-        return $graph;
+        return $parsedData;
     }
 
     private function connect(DependencyGraph $graph, $sourceName, $destName, $version)
@@ -187,13 +189,12 @@ class DependencyAnalyzer
         if (null === $package) {
             return;
         }
-        
+
         $package->setVersion($lockedPackageData['version']);
 
-        if (isset($lockedPackageData['installation-source'])
-                && isset($lockedPackageData[$lockedPackageData['installation-source']]['reference'])
-                && $lockedPackageData['version'] !== $lockedPackageData[$lockedPackageData['installation-source']]['reference']) {
-            $package->setSourceReference($lockedPackageData[$lockedPackageData['installation-source']]['reference']);
+        if (isset($lockedPackageData['source']['reference'])
+                && $lockedPackageData['version'] !== $lockedPackageData['source']['reference']) {
+            $package->setSourceReference($lockedPackageData['source']['reference']);
         }
     }
 

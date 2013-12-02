@@ -7,6 +7,7 @@ Version: <null>
 jms/metadata
 ============
 Version: 1.1.1
+Source-Reference: 84088bc4f6e2387ec8b549bffc1e037107572f5a
 -> php
 
 
