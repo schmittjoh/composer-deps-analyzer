@@ -60,7 +60,7 @@ class DependencyAnalyzer
         );
     }
 
-    private function analyzeComposerData($composerJsonData, $composerLockData = null, $dir = null)
+    public function analyzeComposerData($composerJsonData, $composerLockData = null, $dir = null)
     {
         $rootPackageData = $this->parseJson($composerJsonData);
         if ( ! isset($rootPackageData['name'])) {
