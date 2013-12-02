@@ -2,15 +2,37 @@
 
 namespace JMS\Tests\Composer;
 
+use JMS\Composer\Graph\PackageNode;
 use Symfony\Component\Filesystem\Filesystem;
 use JMS\Composer\Graph\DependencyEdge;
 use JMS\Composer\DependencyAnalyzer;
 use JMS\Composer\Graph\DependencyGraph;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class DependencyAnalyzerTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var DependencyAnalyzer */
     private $analyzer;
+
+    /** @var Filesystem */
     private $fs;
+
+    /**
+     * @expectedException JMS\Composer\Exception\MissingLockFileException
+     */
+    public function testThrowsExceptionWhenLockFileIsMissing()
+    {
+        $this->analyzer->analyzeComposerData(<<<'COMPOSER'
+{
+   "name": "foo/bar",
+   "require": {
+       "asdf/foo": "1.*"
+   }
+}
+COMPOSER
+        );
+    }
 
     /**
      * @dataProvider getAnalyzeTests
@@ -76,17 +98,16 @@ class DependencyAnalyzerTest extends \PHPUnit_Framework_TestCase
 
     private function install($dir)
     {
-        $proc = new \Symfony\Component\Process\Process('php '.__DIR__.'/../../../../vendor/composer/composer/bin/composer install --dev');
-        $proc->setWorkingDirectory($dir);
+        $proc = new Process('php '.__DIR__.'/../../../../vendor/bin/composer install --dev', $dir);
         if (0 !== $proc->run()) {
-            throw new \Symfony\Component\Process\Exception\ProcessFailedException($proc);
+            throw new ProcessFailedException($proc);
         }
     }
 
     private function dumpGraph(DependencyGraph $graph)
     {
         $packages = $graph->getPackages();
-        usort($packages, function($a, $b) use ($graph) {
+        usort($packages, function(PackageNode $a, PackageNode $b) use ($graph) {
             if ($graph->isRootPackage($a)) {
                 return -1;
             }
@@ -117,7 +138,7 @@ class DependencyAnalyzerTest extends \PHPUnit_Framework_TestCase
             }
 
             if (count($outEdges = $package->getOutEdges()) > 0) {
-                usort($outEdges, function($a, $b) {
+                usort($outEdges, function(DependencyEdge $a, DependencyEdge $b) {
                     return strcmp($a->getDestPackage()->getName(), $b->getDestPackage()->getName());
                 });
 

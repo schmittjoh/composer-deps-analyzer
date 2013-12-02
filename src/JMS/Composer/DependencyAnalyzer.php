@@ -71,7 +71,7 @@ class DependencyAnalyzer
         // dependencies, or the dependencies were not installed.
         if (empty($composerLockData)) {
             if ($this->hasDependencies($rootPackageData)) {
-                throw new MissingLockFileException($dir);
+                throw new MissingLockFileException();
             }
 
             $graph = new DependencyGraph(new PackageNode($rootPackageData['name'], $rootPackageData));
