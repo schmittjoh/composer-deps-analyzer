@@ -1,4 +1,4 @@
-Composer Dependency Analyzer
+Composer Dependency Analyzer [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/schmittjoh/composer-deps-analyzer/badges/quality-score.png?s=9bfccbd612e0d6d891ef14b16b262230fbf6cc08)](https://scrutinizer-ci.com/g/schmittjoh/composer-deps-analyzer/)
 ============================
 This library allows you to build a dependency graph for an installed composer project.
 
