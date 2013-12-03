@@ -73,12 +73,14 @@ class PackageNode
         $this->repositoryId = $id;
     }
 
-    /**
-     * @return bool
-     */
     public function isPhpExtension()
     {
         return 0 === strpos($this->getQualifiedName(), 'ext-');
+    }
+
+    public function isPhpRuntime()
+    {
+        return $this->getQualifiedName() === 'php';
     }
 
     /**
