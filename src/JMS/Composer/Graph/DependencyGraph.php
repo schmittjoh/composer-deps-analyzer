@@ -67,6 +67,15 @@ class DependencyGraph
     }
 
     /**
+     * @param string $name
+     * @return bool
+     */
+    public function isRootPackageName($name)
+    {
+        return $this->rootPackage->getName() === $name;
+    }
+
+    /**
      * @return PackageNode[]
      */
     public function getPackages()

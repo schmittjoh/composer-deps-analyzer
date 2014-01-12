@@ -35,6 +35,19 @@ COMPOSER
     }
 
     /**
+     * @group bug-duplicate
+     */
+    public function testDuplicatePackageBug()
+    {
+        $graph = $this->analyzer->analyzeComposerData(
+            file_get_contents(__DIR__.'/Fixture/prophecy_composer.json'),
+            file_get_contents(__DIR__.'/Fixture/prophecy_composer.lock')
+        );
+
+        $this->assertEquals(file_get_contents(__DIR__.'/Fixture/prophecy_graph.txt'), $this->dumpGraph($graph));
+    }
+
+    /**
      * @dataProvider getAnalyzeTests
      * @param string $configName
      * @throws \InvalidArgumentException
@@ -81,6 +94,10 @@ COMPOSER
     {
         if ( ! is_file($configPath = __DIR__.'/Fixture/'.$configName.'_composer.json')) {
             throw new \InvalidArgumentException(sprintf('The root config "%s" does not exist.', $configPath));
+        }
+
+        if ( is_file($lockPath = __DIR__.'/Fixture/'.$configName.'_composer.lock')) {
+            return $this->analyzer->analyzeComposerData(file_get_contents($configPath), file_get_contents($lockPath));
         }
 
         $tmpDir = tempnam(sys_get_temp_dir(), 'dependencyAnalyzer');

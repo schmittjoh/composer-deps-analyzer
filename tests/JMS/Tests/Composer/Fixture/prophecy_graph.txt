@@ -1,0 +1,87 @@
+phpspec/prophecy (Root)
+=======================
+Version: <null>
+-> phpspec/phpspec
+
+
+behat/behat
+===========
+Version: <null>
+
+
+bossa/phpspec2-expect
+=====================
+Version: <null>
+
+
+php
+===
+Version: <null>
+
+
+phpspec/php-diff
+================
+Version: v1.0.2
+Source-Reference: 30e103d19519fe678ae64a60d77884ef3d71b28a
+
+
+phpspec/phpspec
+===============
+Version: dev-master
+Source-Reference: c1cff1c0dac5c9936e2419d69af57978e2a6d043
+-> behat/behat
+-> bossa/phpspec2-expect
+-> php
+-> phpspec/php-diff
+-> phpspec/prophecy
+-> symfony/console
+-> symfony/event-dispatcher
+-> symfony/finder
+-> symfony/yaml
+
+
+psr/log
+=======
+Version: <null>
+
+
+symfony/console
+===============
+Version: dev-master
+Source-Reference: 62a18a52e66662bc4bf1edf0b9916b97caad3418
+-> php
+-> symfony/event-dispatcher
+
+
+symfony/dependency-injection
+============================
+Version: <null>
+
+
+symfony/event-dispatcher
+========================
+Version: dev-master
+Source-Reference: a37a9430e2eafb6a66de240ac13f91b45b4c3d37
+-> php
+-> psr/log
+-> symfony/dependency-injection
+-> symfony/stopwatch
+
+
+symfony/finder
+==============
+Version: dev-master
+Source-Reference: 9a267caac6298b91efc7f0bc8522fd80f48fee98
+-> php
+
+
+symfony/stopwatch
+=================
+Version: <null>
+
+
+symfony/yaml
+============
+Version: dev-master
+Source-Reference: 9921872611710df49cf035c259e5a461ea2d0f8c
+-> php

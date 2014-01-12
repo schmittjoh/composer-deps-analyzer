@@ -102,20 +102,12 @@ class DependencyAnalyzer
 
         // Add regular packages.
         if (isset($lockData['packages'])) {
-            foreach ($lockData['packages'] as $packageData) {
-                $package = $graph->createPackage($packageData['name'], $packageData);
-                $package->setAttribute('dir', $vendorDir.'/'.$packageData['name']);
-                $this->processLockedData($graph, $packageData);
-            }
+            $this->addPackages($graph, $lockData['packages'], $vendorDir);
         }
 
         // Add development packages.
         if (isset($lockData['packages-dev'])) {
-            foreach ($lockData['packages-dev'] as $packageData) {
-                $package = $graph->createPackage($packageData['name'], $packageData);
-                $package->setAttribute('dir', $vendorDir.'/'.$packageData['name']);
-                $this->processLockedData($graph, $packageData);
-            }
+            $this->addPackages($graph, $lockData['packages-dev'], $vendorDir);
         }
 
         // Connect dependent packages.
@@ -136,6 +128,19 @@ class DependencyAnalyzer
         }
 
         return $graph;
+    }
+
+    private function addPackages(DependencyGraph $graph, array $packages, $vendorDir)
+    {
+        foreach ($packages as $packageData) {
+            if ($graph->isRootPackageName($packageData['name'])) {
+                continue;
+            }
+
+            $package = $graph->createPackage($packageData['name'], $packageData);
+            $package->setAttribute('dir', $vendorDir.'/'.$packageData['name']);
+            $this->processLockedData($graph, $packageData);
+        }
     }
 
     private function parseJson($data)
