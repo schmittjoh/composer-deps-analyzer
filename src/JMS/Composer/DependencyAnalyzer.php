@@ -233,11 +233,11 @@ class DependencyAnalyzer
         }
 
         foreach ($requires as $name => $versionConstraint) {
-            if ('php' === $name) {
+            if ('php' === strtolower($name)) {
                 continue;
             }
 
-            if (0 === strpos($name, 'ext-')) {
+            if (0 === stripos($name, 'ext-')) {
                 continue;
             }
 

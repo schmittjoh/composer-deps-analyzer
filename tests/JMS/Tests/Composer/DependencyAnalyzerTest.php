@@ -18,6 +18,21 @@ class DependencyAnalyzerTest extends \PHPUnit_Framework_TestCase
     /** @var Filesystem */
     private $fs;
 
+    public function testUpperCasePhp()
+    {
+        $graph = $this->analyzer->analyzeComposerData(<<<'COMPOSER'
+{
+    "require": {
+        "PHP": ">= 5.2",
+        "ExT-foo": "dev-master"
+    }
+}
+COMPOSER
+        );
+
+        $this->assertCount(3, $graph->getPackages());
+    }
+
     /**
      * @expectedException JMS\Composer\Exception\MissingLockFileException
      */
