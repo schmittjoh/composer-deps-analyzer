@@ -75,12 +75,12 @@ class PackageNode
 
     public function isPhpExtension()
     {
-        return 0 === strpos($this->getQualifiedName(), 'ext-');
+        return 0 === stripos($this->getQualifiedName(), 'ext-');
     }
 
     public function isPhpRuntime()
     {
-        return $this->getQualifiedName() === 'php';
+        return strtolower($this->getQualifiedName()) === 'php';
     }
 
     /**
