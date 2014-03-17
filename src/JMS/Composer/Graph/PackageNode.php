@@ -218,11 +218,20 @@ class PackageNode
      */
     public function replaces($package)
     {
-        if ( ! isset($this->data['replace'])) {
-            return false;
-        }
+        return $this->hasDataKey('replace', $package);
+    }
 
-        return isset($this->data['replace'][$package]);
+    public function hasDataKey($key, $search)
+    {
+        if (isset($this->data[$key])) {
+            $search = strtolower($search);
+            foreach ($this->data[$key] as $k => $v) {
+                if (strtolower($k) === $search) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

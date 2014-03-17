@@ -1,0 +1,24 @@
+{
+    "require": {
+        "Lower/Case": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "lower/case",
+                "version": "dev-master",
+                "require": {
+                    "mixed/case": "dev-master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "Mixed/Case",
+                "version": "dev-master"
+            }
+        }
+    ]
+}
