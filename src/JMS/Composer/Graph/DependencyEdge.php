@@ -74,6 +74,6 @@ class DependencyEdge
      */
     public function isDevDependency()
     {
-        return $this->sourcePackage->hasDataKey('require-dev', $this->destPackage->getName());
+        return $this->sourcePackage->hasDataPackageKey('require-dev', $this->destPackage->getName());
     }
 }
