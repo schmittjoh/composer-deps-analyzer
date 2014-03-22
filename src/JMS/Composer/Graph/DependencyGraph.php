@@ -42,7 +42,7 @@ class DependencyGraph
     public function __construct(PackageNode $rootPackage = null)
     {
         if (null !== $rootPackage) {
-            $this->packages[$rootPackage->getName()] = $rootPackage;
+            $this->packages[strtolower($rootPackage->getName())] = $rootPackage;
         }
 
         $this->rootPackage = $rootPackage ?: $this->getOrCreate('__root');
@@ -72,7 +72,7 @@ class DependencyGraph
      */
     public function isRootPackageName($name)
     {
-        return $this->rootPackage->getName() === $name;
+        return strtolower($this->rootPackage->getName()) === strtolower($name);
     }
 
     /**
@@ -90,7 +90,7 @@ class DependencyGraph
      */
     public function getPackage($name)
     {
-        return isset($this->packages[$name]) ? $this->packages[$name] : null;
+        return isset($this->packages[$name = strtolower($name)]) ? $this->packages[$name] : null;
     }
 
     /**
@@ -100,7 +100,7 @@ class DependencyGraph
      */
     public function hasPackage($name)
     {
-        return isset($this->packages[$name]);
+        return isset($this->packages[strtolower($name)]);
     }
 
     /**
@@ -112,11 +112,11 @@ class DependencyGraph
      */
     public function createPackage($name, array $data = array())
     {
-        if (isset($this->packages[$name])) {
+        if (isset($this->packages[strtolower($name)])) {
             throw new \InvalidArgumentException(sprintf('The package "%s" already exists.', $name));
         }
 
-        return $this->packages[$name] = new PackageNode($name, $data);
+        return $this->packages[strtolower($name)] = new PackageNode($name, $data);
     }
 
     /**
@@ -166,10 +166,10 @@ class DependencyGraph
      */
     private function getOrCreate($package)
     {
-        if (isset($this->packages[$package])) {
-            return $this->packages[$package];
+        if (isset($this->packages[strtolower($package)])) {
+            return $this->packages[strtolower($package)];
         }
 
-        return $this->packages[$package] = new PackageNode($package);
+        return $this->packages[strtolower($package)] = new PackageNode($package);
     }
 }

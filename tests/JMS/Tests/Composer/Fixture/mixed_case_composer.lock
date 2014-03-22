@@ -1,0 +1,15 @@
+{
+    "packages": [
+        {
+            "name": "lower/case",
+            "version": "dev-master",
+            "require": {
+                "mixed/case": "dev-master"
+            }
+        },
+        {
+            "name": "Mixed/Case",
+            "version": "dev-master"
+        }
+    ]
+}

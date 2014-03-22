@@ -218,11 +218,28 @@ class PackageNode
      */
     public function replaces($package)
     {
-        if ( ! isset($this->data['replace'])) {
-            return false;
-        }
+        return $this->hasDataPackageKey('replace', $package);
+    }
 
-        return isset($this->data['replace'][$package]);
+    /**
+     * Checks if this package has the given $packageName in its $data[$dataKey] hash.
+     *
+     * @param string $dataKey
+     * @param string $packageName
+     *
+     * @return bool
+     */
+    public function hasDataPackageKey($dataKey, $packageName)
+    {
+        if (isset($this->data[$dataKey]) && is_array($this->data[$dataKey])) {
+            $packageName = strtolower($packageName);
+            foreach (array_keys($this->data[$dataKey]) as $k) {
+                if (strtolower($k) === $packageName) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
