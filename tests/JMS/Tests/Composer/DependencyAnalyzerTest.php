@@ -49,6 +49,16 @@ COMPOSER
         );
     }
 
+    public function testRedundantPackage()
+    {
+        $graph = $this->analyzer->analyzeComposerData(
+            file_get_contents(__DIR__.'/Fixture/redundant_package.json'),
+            file_get_contents(__DIR__.'/Fixture/redundant_package.lock')
+        );
+
+        $this->assertEquals(file_get_contents(__DIR__.'/Fixture/redundant_package_graph.txt'), $this->dumpGraph($graph));
+    }
+
     /**
      * @group bug-duplicate
      */

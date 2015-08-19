@@ -1,0 +1,89 @@
+RedundantPackage (Root)
+=======================
+Version: <null>
+-> codeception/aspect-mock
+-> codeception/codeception
+-> fzaninotto/faker
+-> mikey179/vfsstream
+-> nikic/php-parser
+-> php
+-> phpunit/dbunit
+-> phpunit/php-invoker
+-> phpunit/phpunit-mock-objects
+-> symfony/finder
+
+
+codeception/aspect-mock
+=======================
+Version: <null>
+
+
+codeception/codeception
+=======================
+Version: <null>
+
+
+ext-pdo
+=======
+Version: <null>
+
+
+ext-simplexml
+=============
+Version: <null>
+
+
+fzaninotto/faker
+================
+Version: <null>
+
+
+mikey179/vfsstream
+==================
+Version: <null>
+
+
+nikic/php-parser
+================
+Version: <null>
+
+
+php
+===
+Version: <null>
+
+
+phpunit/dbunit
+==============
+Version: 1.4.0
+Source-Reference: 1afe25c90834ec499f007f48dd73767fdec3bf4f
+-> ext-pdo
+-> ext-simplexml
+-> php
+-> phpunit/phpunit
+-> symfony/yaml
+
+
+phpunit/php-invoker
+===================
+Version: <null>
+
+
+phpunit/phpunit
+===============
+Version: <null>
+
+
+phpunit/phpunit-mock-objects
+============================
+Version: <null>
+
+
+symfony/finder
+==============
+Version: <null>
+
+
+symfony/yaml
+============
+Version: <null>

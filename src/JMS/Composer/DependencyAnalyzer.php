@@ -133,7 +133,7 @@ class DependencyAnalyzer
     private function addPackages(DependencyGraph $graph, array $packages, $vendorDir)
     {
         foreach ($packages as $packageData) {
-            if ($graph->isRootPackageName($packageData['name'])) {
+            if ($graph->isRootPackageName($packageData['name']) || $graph->hasPackage($packageData['name'])) {
                 continue;
             }
 
