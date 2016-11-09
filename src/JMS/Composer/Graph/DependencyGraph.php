@@ -129,6 +129,11 @@ class DependencyGraph
         $nodeA = $this->getOrCreate($packageA);
         $nodeB = $this->getOrCreate($packageB);
 
+        // Do not connect the same package
+        if ($packageA === $packageB){
+            return;
+        }
+
         // Do not add duplicate connections.
         foreach ($nodeA->getOutEdges() as $edge) {
             if ($edge->getDestPackage() === $nodeB) {
